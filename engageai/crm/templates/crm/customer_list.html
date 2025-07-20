@@ -1,0 +1,7 @@
+<h2>客户列表</h2>
+<a href="{% url 'add_customer' %}">新增客户</a>
+<ul>
+  {% for c in customers %}
+    <li>{{ c.name }} | {{ c.email }} | {{ c.source }} | {{ c.tag }}</li>
+  {% endfor %}
+</ul>

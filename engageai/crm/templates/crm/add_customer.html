@@ -1,0 +1,9 @@
+<h2>新增客户</h2>
+<form method="post">
+  {% csrf_token %}
+  <label>姓名：</label><input type="text" name="name"><br>
+  <label>邮箱：</label><input type="email" name="email"><br>
+  <label>来源：</label><input type="text" name="source"><br>
+  <label>标签：</label><input type="text" name="tag"><br>
+  <button type="submit">提交</button>
+</form>
