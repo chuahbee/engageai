@@ -2,6 +2,7 @@ from django.shortcuts import render
 from core.kmp import kmp_search
 from interaction.models import KMPInteraction
 from core.openai_helper import get_ai_response
+from django.core.paginator import Paginator
 
 KEYWORDS = ["支付失败", "API问题", "没有客服", "电商网站", "需要帮助"]
 
@@ -39,4 +40,20 @@ def keyword_match_view(request):
         else:
             result = "请输入内容再提交。"
 
-    return render(request, 'core/kmp_test.html', {'result': result})
+    return render(request, 'core/kmp_test.html', {
+        'result': result,
+        'all_interactions': KMPInteraction.objects.order_by('-created_at')[:10]
+    })
+
+def chat_history_view(request):
+    interactions = KMPInteraction.objects.all().order_by('-created_at')  # 最新在上
+    return render(request, 'core/chat_history.html', {'interactions': interactions})
+
+def chat_history_view(request):
+    interactions = KMPInteraction.objects.order_by('-created_at')
+    paginator = Paginator(interactions, 10)  # 每页 10 条
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'core/chat_history.html', {'page_obj': page_obj})
